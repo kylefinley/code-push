@@ -310,7 +310,7 @@ class AccountManager {
                 })
                 .end((err: any, res: superagent.Response) => {
                     if (err) {
-                        reject(<CodePushError>{ message: this.getErrorMessage(err, res), statusCode: res.status });
+                        reject(<CodePushError>{ message: this.getErrorMessage(err, res), statusCode: res && res.status });
                         return;
                     }
 
@@ -323,9 +323,9 @@ class AccountManager {
                         }
 
                         if (body) {
-                            reject(<CodePushError>{ message: body.message, statusCode: res.status });
+                            reject(<CodePushError>{ message: body.message, statusCode: res && res.status });
                         } else {
-                            reject(<CodePushError>{ message: res.text, statusCode: res.status });
+                            reject(<CodePushError>{ message: res.text, statusCode: res && res.status });
                         }
                     }
                 });
@@ -384,7 +384,7 @@ class AccountManager {
                 if (err) {
                     reject(<CodePushError>{
                         message: this.getErrorMessage(err, res),
-                        statusCode: res.status
+                        statusCode: res && res.status
                     });
 
                     return;
@@ -397,7 +397,7 @@ class AccountManager {
 
                 if (res.ok) {
                     if (expectResponseBody && !body) {
-                        reject(<CodePushError>{ message: `Could not parse response: ${res.text}`, statusCode: res.status });
+                        reject(<CodePushError>{ message: `Could not parse response: ${res.text}`, statusCode: res && res.status });
                     } else {
                         resolve(<JsonResponse>{
                             headers: res.header,
@@ -406,9 +406,9 @@ class AccountManager {
                     }
                 } else {
                     if (body) {
-                        reject(<CodePushError>{ message: body.message, statusCode: res.status});
+                        reject(<CodePushError>{ message: body.message, statusCode: res && res.status});
                     } else {
-                        reject(<CodePushError>{ message: res.text, statusCode: res.status });
+                        reject(<CodePushError>{ message: res.text, statusCode: res && res.status });
                     }
                 }
             });
