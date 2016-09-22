@@ -78,7 +78,9 @@ class AccountManager {
 
             request.end((err: any, res: superagent.Response) => {
                 var status: number = res ? res.status : err.status;
+                console.log(status);
                 if (err && status !== 401) {
+                    console.log("Rejected");
                     reject(<CodePushError>{ message: this.getErrorMessage(err, res), statusCode: status });
                     return;
                 }
